@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Your Own Image Hosting</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/tachyons.min.css}"/>
+</head>
+
+<body class="sans-serif">
+<main class="pa4 black-80">
+    <form method="POST" enctype="multipart/form-data" action="/editImage" class="measure center">
+        <fieldset id="sign_up" class="ba b--transparent ph0 mh0">
+            <legend class="f2 fw6 ph0 mh0">Edit image</legend>
+            <div class="mt3">
+                <label class="db fw6 lh-copy f6" for="disabledTitle">Title</label>
+                <input class="gray bg-light-gray pa2 input-reset ba w-100" type="text" name="disabledTitle" id="disabledTitle" th:value="${image.title}" disabled />
+            </div>
+            <div class="mt3">
+                <label class="db fw6 lh-copy f6" for="description">Description</label>
+                <textarea class="pa2 input-reset ba w-100" rows="5" name="description" id="description" th:text="${image.description}"></textarea>
+            </div>
+            <div class="mv3">
+                <label class="db fw6 lh-copy f6" for="file">Upload File</label>
+                <input type="file" name="file" id="file" />
+            </div>
+            <div class="mv3">
+                <label class="db fw6 lh-copy f6" for="tags">Tags</label>
+                <input class="pa2 input-reset ba w-100" type="text" name="tags" id="tags" th:value="${tags}">
+                <p>Multiple tags are allowed. Please separate tags by "," such as labrador, dog, yellow </p>
+            </div>
+            <input class="pa2 input-reset ba w-100" type="hidden" name="title" id="title" th:value="${image.title}" />
+        </fieldset>
+        <div class="">
+            <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Edit" />
+        </div>
+    </form>
+</main>
+</body>
+</html>

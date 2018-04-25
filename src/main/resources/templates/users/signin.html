@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Your Own Image Hosting</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/tachyons.min.css}"/>
+</head>
+
+<body class="sans-serif">
+    <div th:if="${error != null}" class="flex items-center justify-center pa4 bg-light-red black" >
+        <h3 class="lh-title ml3">Incorrect username or password</h3>
+    </div>
+
+    <main class="pa4 black-80">
+        <form method="POST" action="/signin" class="measure center">
+            <fieldset id="sign_up" class="ba b--transparent ph0 mh0">
+                <legend class="f2 fw6 ph0 mh0">Sign into your account</legend>
+                <div class="mt3">
+                    <label class="db fw6 lh-copy f6" for="username">Username</label>
+                    <input class="pa2 input-reset ba w-100" type="text" name="username" id="username">
+                </div>
+                <div class="mt3">
+                    <label class="db fw6 lh-copy f6" for="password">Password</label>
+                    <input class="pa2 input-reset ba w-100" type="password" name="password" id="password">
+                </div>
+            </fieldset>
+            <div class="mt3">
+                <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Sign in">
+            </div>
+        </form>
+    </main>
+</body>
+</html>

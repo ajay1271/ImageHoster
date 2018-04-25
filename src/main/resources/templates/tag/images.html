@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Upload an image</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/tachyons.min.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/app.css}"/>
+
+</head>
+
+<body class="sans-serif">
+<nav class="dt w-100 border-box pa3">
+    <a class="dtc v-mid mid-gray link dim w-25" href="/" title="Home">
+        <h3 color="red pa0">Image Uploader</h3>
+    </a>
+    <div class="dtc v-mid w-75 tr">
+        <div th:if="${session.currUser}">
+            <a class="black link pointer f6 f5-l dib mr3 mr4-l" href="/user/edit_profile" title="Edit Profile">User Setting</a>
+            <a class="black link pointer f6 f5-l dib mr3 mr4-l" href="/signout" title="Log out">Sign out</a>
+            <a class="b f6 link dim ph3 pv2 mb2 dib white bg-black" href="/images/upload" title="Upload">Upload Image</a>
+        </div>
+        <div th:unless="${session.currUser}">
+            <a class="black link pointer f6 f5-l dib mr3 mr4-l" href="/signin" title="Sign in">Sign in</a>
+            <a class="b f6 link dim ph3 pv2 mb2 dib white bg-black" href="/signup" title="Sign Up">Sign Up</a>
+        </div>
+    </div>
+</nav>
+<section class="cf w-100 pa2-ns">
+    <h2 class="pl2" th:text="'Tag: ' + ${tag}">Title</h2>
+    <article class="fl w-100 w-50-m  w-25-ns pa2-ns"  th:each="image : ${images}">
+        <div class="aspect-ratio aspect-ratio--1x1">
+            <img class="db bg-center cover aspect-ratio--object" th:style="'background:url(data:image/jpeg;base64,'+${image.imageFile} + ');'" />
+        </div>
+        <a th:href="'/images/'+${image.title}" class="ph2 ph0-ns link db">
+            <h3 class="f5 f4-ns mb0 black-90 link hover blue" th:text="${image.title}">Title of image</h3>
+        </a>
+        <h3 class="f6 f5 fw4 mt2 black-60" th:text="${image.uploadDate}">Upload date</h3>
+    </article>
+</section>
+</body>
+</html>

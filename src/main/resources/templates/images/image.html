@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Your Own Image Hosting</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" th:href="@{/css/tachyons.min.css}"/>
+    </head>
+    <body class="sans-serif">
+        <nav class="dt w-100 border-box pa3">
+            <a class="dtc v-mid mid-gray link dim w-25" href="/" title="Home">
+                <h3 color="red pa0">Image Uploader</h3>
+            </a>
+            <div class="dtc v-mid w-75 tr">
+                <div th:if="${session.currUser}">
+                    <a class="black link pointer f6 f5-l dib mr3 mr4-l" th:href="'/images/' + ${image.title} + '/edit'" title="Edit">Edit</a>
+                    <a class="red link pointer f6 f5-l dib mr3 mr4-l" th:href="'/images/' + ${image.title} + '/delete'" title="Delete">Delete</a>
+                    <a class="b f6 link dim ph3 pv2 mb2 dib white bg-black" href="/images/upload" title="Upload">Upload Image</a>
+                </div>
+                <div th:unless="${session.currUser}">
+                    <a class="black link pointer f6 f5-l dib mr3 mr4-l" href="/signin" title="Sign in">Sign in</a>
+                    <a class="b f6 link dim ph3 pv2 mb2 dib white bg-black" href="/signup" title="Sign Up">Sign Up</a>
+                </div>
+            </div>
+        </nav>
+        <div class="fl w-25-l">
+            &nbsp;
+        </div>
+        <article class="fl w-50-l w-100 pa3 pa5-ns center">
+            <ul class="list pl0 center">
+                <li class="flex items-center lh-copy">
+                    <img class="w3 h3 br-100" th:src="'data:image/jpeg;base64,'+${user.ProfilePhoto.ProfileImageData}" />
+                    <div class="pl3 flex-auto">
+                        <span class="b f6 db black" th:text="${user.username}">Name</span>
+                        <span th:if="${user.description}" class="f6 db black-70" th:text="${user.description}">Description</span>
+                    </div>
+                </li>
+            </ul>
+            <h1 class="f2 mb0" th:text="${image.title}">Title</h1>
+            <p class="measure lh-copy mt2 mb4" th:text="${image.description}">text</p>
+            <img th:src="'data:image/jpeg;base64,'+${image.imageFile}" th:alt="${image.title}" class="w-100 dib measure" />
+            <p class="grey f6" th:text="${image.numView} + ' views'">Num Views</p>
+            <ul class="list mt0 mb5 pl0">
+                <li th:each="tag : ${tags}" class="dib">
+                    <a th:href="'/tags/' + ${tag.name}"class="f6 link dim ba ph3 pv2 mb2 dib black mr2" th:text="${tag.name}">Tag name</a>
+                </li>
+            </ul>
+            <h5 class="f4 mb0 underline">Comments</h5>
+            <form method="POST" enctype="multipart/form-data" th:action="'/image/'+${image.title}+'/comments/create'" th:if="${session.currUser}">
+                <fieldset id="sign_up" class="ba b--transparent ph0 mh0">
+                    <div class="mt3">
+                        <label class="db fw6 lh-copy f6" for="comment">Write a comment</label>
+                        <textarea class="pa2 input-reset ba w-100" rows="5" name="comment" id="comment"></textarea>
+                    </div>
+                </fieldset>
+                <div>
+                    <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Submit">
+                </div>
+            </form>
+            <div class="comments mt5">
+                <article class="ba b--black-10 mv4" th:each="comment : ${comments}">
+                    <h1 class="f4 bg-light-gray black-80 mv0 pv2 ph3" th:text="${comment.user.username} + ' says'">Title of card</h1>
+                    <div class="pa3 bt b--black-10">
+                        <p class="f6 f5-ns lh-copy measure" th:text="${comment.text}">
+                            text
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </article>
+        <div class="fl w-25-l">
+            &nbsp;
+        </div>
+    </body>
+</html>

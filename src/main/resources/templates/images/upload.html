@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+    <html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Your Own Image Hosting</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link rel="stylesheet" type="text/css" th:href="@{/css/tachyons.min.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/app.css}"/>
+    </head>
+
+    <body class="sans-serif">
+        <main class="pa4 black-80">
+            <form method="POST" enctype="multipart/form-data" action="/upload" class="measure center">
+                <fieldset id="sign_up" class="ba b--transparent ph0 mh0">
+                    <legend class="f2 fw6 ph0 mh0">Upload a new image</legend>
+                    <div class="mt3">
+                        <label class="db fw6 lh-copy f6" for="title">Title</label>
+                        <input class="pa2 input-reset ba w-100" type="text" name="title" id="title">
+                    </div>
+                    <div class="mt3">
+                        <label class="db fw6 lh-copy f6" for="description">Description</label>
+                        <textarea class="pa2 input-reset ba w-100" rows="5" name="description" id="description"></textarea>
+                    </div>
+                    <div class="mv3">
+                        <label class="db fw6 lh-copy f6" for="file">Upload File</label>
+                        <input type="file" name="file" id="file" />
+                    </div>
+                    <div class="mt3 mb4">
+                        <label class="db fw6 lh-copy f6" for="tags">Tags</label>
+                        <input class="pa2 input-reset ba w-100" type="text" name="tags" id="tags">
+                        <p class="f6 fw4">Multiple tags are allowed. Please separate tags by "," such as labrador, dog, yellow </p>
+                    </div>
+                </fieldset>
+                <div class="">
+                    <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Upload">
+                </div>
+            </form>
+        </main>
+    </body>
+</html>

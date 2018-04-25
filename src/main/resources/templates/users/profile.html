@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Your Own Image Hosting</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/tachyons.min.css}"/>
+</head>
+
+<body class="sans-serif">
+<main class="pa4 black-80">
+    <form method="POST" enctype="multipart/form-data" action="/user/edit_profile" class="measure center">
+        <fieldset id="sign_up" class="ba b--transparent ph0 mh0">
+            <legend class="f2 fw6 ph0 mh0">Edit user info</legend>
+            <div class="mt3">
+                <label class="db fw6 lh-copy f6" for="disabledUsername">Username</label>
+                <input class="gray bg-light-gray pa2 input-reset ba w-100" type="text" name="disabledUsername" id="disabledUsername" th:value="${user.username}" disabled />
+            </div>
+            <div class="mt3">
+                <label class="db fw6 lh-copy f6" for="description">User Description</label>
+                <textarea class="pa2 input-reset ba w-100" rows="5" name="description" id="description" th:text="${user.description}"></textarea>
+            </div>
+            <div class="mv3">
+                <label class="db fw6 lh-copy f6" for="file">Upload Profile Image</label>
+                <input type="file" name="file" id="file" />
+            </div>
+            <input class="pa2 input-reset ba w-100" type="hidden" name="username" id="username" th:value="${user.username}" />
+        </fieldset>
+        <div class="">
+            <input class="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" type="submit" value="Update" />
+        </div>
+    </form>
+</main>
+</body>
+</html>
