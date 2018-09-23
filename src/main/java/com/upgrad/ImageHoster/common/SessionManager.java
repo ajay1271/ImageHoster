@@ -41,7 +41,7 @@ public class SessionManager {
      *
      * @return void
      */
-    public void commitSession(final Session session){
+    public void commitSession(final Session session) {
         session.flush();
         session.getTransaction().commit();
         session.close();

@@ -5,9 +5,9 @@
 <hibernate-configuration>
     <session-factory>
         <property name="connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.username">chenghan</property>
-        <property name="hibernate.connection.password">upgrad</property>
-        <property name="connection.url">jdbc:postgresql://localhost:5432/chenghan</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">ajay</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/testdb</property>
         <property name="hibernate.connection.pool_size">1</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgresPlusDialect</property>
         <property name="hibernate.current_session_context_class">managed</property>
@@ -16,9 +16,12 @@
         <!--<property name="hbm2ddl.auto">create</property>-->
 
         <!--Entity classes to be created as tables in database-->
-        <!--<mapping class="com.upgrad.ImageHoster.model.User" />-->
-        <!--<mapping class="com.upgrad.ImageHoster.model.Image" />-->
-        <!--<mapping class="com.upgrad.ImageHoster.model.Tag" />-->
-        <!--<mapping class="com.upgrad.ImageHoster.model.ProfilePhoto" />-->
+        <mapping class="com.upgrad.ImageHoster.model.User" />
+        <mapping class="com.upgrad.ImageHoster.model.Image" />
+        <mapping class="com.upgrad.ImageHoster.model.Tag" />
+        <mapping class="com.upgrad.ImageHoster.model.ProfilePhoto" />
+
+
     </session-factory>
+
 </hibernate-configuration>

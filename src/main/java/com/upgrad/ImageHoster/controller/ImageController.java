@@ -3,6 +3,7 @@ package com.upgrad.ImageHoster.controller;
 import com.upgrad.ImageHoster.model.Image;
 import com.upgrad.ImageHoster.model.Tag;
 import com.upgrad.ImageHoster.model.User;
+
 import com.upgrad.ImageHoster.service.ImageService;
 import com.upgrad.ImageHoster.service.TagService;
 import com.upgrad.ImageHoster.service.UserService;
@@ -17,10 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 
 @Controller
@@ -34,11 +32,13 @@ public class ImageController {
     @Autowired
     private UserService userService;
 
+
+
     /**
      * This controller method returns all the images that have been
      * uploaded to the website
-     * @param model used to pass data to the view for rendering
      *
+     * @param model used to pass data to the view for rendering
      * @return the homepage view
      */
     @RequestMapping("/")
@@ -54,7 +54,6 @@ public class ImageController {
      *
      * @param session a HTTP session that tells us if the current user
      *                is logged in
-     *
      * @return the image upload form view
      */
     @RequestMapping("/images/upload")
@@ -64,10 +63,9 @@ public class ImageController {
 
         // currUser is null means that the user is not logged in
         // therefore redirect the user back to the home page
-        if(currUser == null ){
+        if (currUser == null) {
             return "redirect:/";
-        }
-        else {
+        } else {
             return "images/upload";
         }
     }
@@ -76,14 +74,12 @@ public class ImageController {
      * This controller method retrieves the data that the user entered
      * into the image uploader form, and creates an image
      *
-     * @param title title of the uploaded image
+     * @param title       title of the uploaded image
      * @param description description of the uploaded image
-     * @param file the image to be uploaded
-     * @param tags tags (i.e. categories) for the images
-     * @param session HTTP session that tells us if the user is logged in
-     *
+     * @param file        the image to be uploaded
+     * @param tags        tags (i.e. categories) for the images
+     * @param session     HTTP session that tells us if the user is logged in
      * @return view for the uploaded image
-     *
      * @throws IOException
      */
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
@@ -95,30 +91,29 @@ public class ImageController {
         User currUser = (User) session.getAttribute("currUser");
 
         // if the user is not logged in, redirect to the home page
-        if(currUser == null ){
+        if (currUser == null) {
             return "redirect:/";
-        }
-        else {
+        } else {
             List<Tag> imageTags = findOrCreateTags(tags);
             String uploadedImageData = convertUploadedFileToBase64(file);
 
             Image newImage = new Image(title, description, uploadedImageData, currUser, imageTags);
             imageService.save(newImage);
 
-            return "redirect:/images/" + newImage.getTitle();
+            return "redirect:/images/" + newImage.getId();
         }
     }
 
     /**
      * This controller shows a specific image
-     * @param title the title of the image that we want to retrieve
-     * @param model used to pass data to the view for rendering
      *
+     * @param id    the id of the image that we want to retrieve
+     * @param model used to pass data to the view for rendering
      * @return view for the image that was requested
      */
-    @RequestMapping("/images/{title}")
-    public String showImage(@PathVariable String title, Model model) {
-        Image image = imageService.getByTitleWithJoin(title);
+    @RequestMapping("/images/{id}")
+    public String showImageById(@PathVariable int id, Model model) {
+        Image image = imageService.getByIdWithJoin(id);
         image.setNumView(image.getNumView() + 1);
         imageService.update(image);
 
@@ -126,8 +121,13 @@ public class ImageController {
         model.addAttribute("image", image);
         model.addAttribute("tags", image.getTags());
 
+        System.out.print("Look Here");
+
         return "images/image";
     }
+
+
+
 
     /**
      * This method deletes a specific image from the database
@@ -143,26 +143,6 @@ public class ImageController {
 
 
         return "redirect:/";
-    }
-
-    /**
-     * This controller method displays an image edit form, so the user
-     * can update the image's description and uploaded file
-     *
-     * @param title title of the image that we want to edit
-     * @param model used to pass data to the view for rendering
-     *
-     * @return the image edit form view
-     */
-    @RequestMapping("/images/{title}/edit")
-    public String editImage(@PathVariable String title, Model model) {
-        Image image = imageService.getByTitleWithJoin(title);
-        String tags = convertTagsToString(image.getTags());
-
-        model.addAttribute("image", image);
-        model.addAttribute("tags", tags);
-
-        return "images/edit";
     }
 
     /**
@@ -199,9 +179,7 @@ public class ImageController {
      * makes it easier for us to store the image data in the datbase
      *
      * @param file the file that we want to convert to base64 encoding
-     *
      * @return base64 encoding of the file that was passed into this function
-     *
      * @throws IOException
      */
     private String convertUploadedFileToBase64(MultipartFile file) throws IOException {
@@ -217,7 +195,6 @@ public class ImageController {
      *                 can be comma delimited to represent multiple Tags
      *                 i.e. "cat, young, kitty" to represent the tags:
      *                 "cat", "young", and "kitty"
-     *
      * @return Tag objects stored in a List
      */
     private List<Tag> findOrCreateTags(String tagNames) {
@@ -226,7 +203,7 @@ public class ImageController {
         List<Tag> tags = new ArrayList<Tag>();
 
         // for each token in the Tokenizer
-        while(st.hasMoreTokens()) {
+        while (st.hasMoreTokens()) {
             // trim any white spaces before or after the String token
             String tagName = st.nextToken().trim();
             // check if the associated Tag has been created and stored in the database
@@ -234,7 +211,7 @@ public class ImageController {
 
             // if the associated Tag has not been created, create the tag
             // and store it in the database
-            if(tag == null) {
+            if (tag == null) {
                 Tag newTag = new Tag(tagName);
                 tag = tagService.createTag(newTag);
             }
@@ -245,19 +222,19 @@ public class ImageController {
         return tags;
     }
 
+
     /**
      * This method takes a List of Tag objects and convert it back
      * to its comma delimited String. This method is needed for the
      * image edit form
      *
      * @param tags a List of Tag objects
-     *
      * @return A comma delimited, String version of the Tag objects
      */
-    private String convertTagsToString (List<Tag> tags) {
+    private String convertTagsToString(List<Tag> tags) {
         String tagString = "";
 
-        for(int i = 0; i <= tags.size() - 2; i++) {
+        for (int i = 0; i <= tags.size() - 2; i++) {
             tagString += tags.get(i).getName() + ", ";
         }
 

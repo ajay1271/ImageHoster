@@ -41,8 +41,8 @@ public class Image implements Serializable{
     // These  annotations creates a join table for many-to-many relationships
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="Image_Tag",
-        joinColumns = { @JoinColumn(name = "image_id")},
-        inverseJoinColumns = { @JoinColumn(name = "tag_id")})
+            joinColumns = { @JoinColumn(name = "image_id")},
+            inverseJoinColumns = { @JoinColumn(name = "tag_id")})
     private List<Tag> tags = new ArrayList<Tag>();
 
 

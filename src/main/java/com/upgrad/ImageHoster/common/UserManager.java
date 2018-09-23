@@ -15,7 +15,6 @@ public class UserManager extends SessionManager {
      * This method saves an User object into the database
      *
      * @param user the User object that we want to save into the database
-     *
      * @return the User object that we saved
      */
     public User registerUser(final User user) {
@@ -52,7 +51,6 @@ public class UserManager extends SessionManager {
      * the User object's username
      *
      * @param username the username of the User that we want to retrieve
-     *
      * @return User object that we retrieved using the username or null
      * if the user is not found
      */
@@ -60,13 +58,13 @@ public class UserManager extends SessionManager {
         Session session = openSession();
 
         try {
-            User user = (User)session.createCriteria(User.class)
+            User user = (User) session.createCriteria(User.class)
                     .add(Restrictions.eq("username", username))
                     .uniqueResult();
             commitSession(session);
 
             return user;
-        } catch(HibernateException e) {
+        } catch (HibernateException e) {
             System.out.println("unable to retrieve an user from database by its username");
         }
 
@@ -79,7 +77,6 @@ public class UserManager extends SessionManager {
      * on the ProfilePhoto table to retrieve the User's profile image
      *
      * @param username the username of the User that we want to retrieve
-     *
      * @return User object that we retrieved using the username or null
      * if the user is not found
      */
@@ -87,14 +84,14 @@ public class UserManager extends SessionManager {
         Session session = openSession();
 
         try {
-            User user = (User)session.createCriteria(User.class)
+            User user = (User) session.createCriteria(User.class)
                     .add(Restrictions.eq("username", username))
                     .uniqueResult();
             Hibernate.initialize(user.getProfilePhoto()); // same as doing a join on profile image table
             commitSession(session);
 
             return user;
-        } catch(HibernateException e) {
+        } catch (HibernateException e) {
             System.out.println("unable to retrieve an image from database by its username with joins");
         }
 
@@ -107,7 +104,6 @@ public class UserManager extends SessionManager {
      *
      * @param username the user's username
      * @param password the user's password
-     *
      * @return the User object that we want to retrieve from the database.
      * Or null if username is not found in the database or the password doesn't
      * match the password of the user with the username.
@@ -135,4 +131,3 @@ public class UserManager extends SessionManager {
         }
     }
 }
-
